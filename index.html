@@ -210,6 +210,7 @@
   }
   .input-row input[type="number"] {
     flex: 1;
+    min-width: 0;
     font-size: 1rem;
     padding: 10px 12px;
   }
@@ -224,6 +225,7 @@
     font-family: inherit;
   }
   .btn:active { transform: scale(0.97); }
+  .input-row .btn { white-space: nowrap; flex-shrink: 0; }
   .btn-sub {
     background: var(--panel-2);
     color: var(--text);
@@ -371,7 +373,7 @@
     top: -20px;
     width: 9px;
     height: 14px;
-    z-index: 998;
+    z-index: 2002;
     pointer-events: none;
     border-radius: 2px;
     animation-name: confetti-fall;
@@ -538,6 +540,201 @@
     text-align: center;
     padding: 10px 0;
   }
+
+  /* ===== Boutons désactivés (partie terminée) ===== */
+  .btn:disabled, .quick-row button:disabled, .input-row input:disabled {
+    opacity: 0.4; cursor: not-allowed;
+  }
+  .settings .game-name-label { flex: 1 1 100%; justify-content: center; }
+  .settings input.game-name { width: min(420px, 70vw); }
+
+  /* ===== Bouton YUM ===== */
+  .btn-yum {
+    width: 100%;
+    margin-bottom: 10px;
+    background: linear-gradient(90deg, #ff5c9c, #ffcd3c, #3ecf8e, #4f8cff, #b26bff, #ff5c9c);
+    background-size: 300% 100%;
+    color: #1a1200;
+    font-weight: 900;
+    letter-spacing: 0.12em;
+    font-size: 1rem;
+    animation: yumShimmer 3s linear infinite;
+    box-shadow: 0 4px 18px rgba(255, 92, 156, 0.25);
+  }
+  .btn-yum:hover { filter: brightness(1.12); }
+  .btn-yum:disabled { animation: none; filter: grayscale(0.8); box-shadow: none; }
+  @keyframes yumShimmer {
+    0% { background-position: 0% 50%; }
+    100% { background-position: 300% 50%; }
+  }
+
+  .winner-banner .btn-next {
+    margin-left: 12px;
+    background: var(--good);
+    color: #05281a;
+    padding: 6px 14px;
+    font-size: 0.85rem;
+  }
+  .winner-banner.yum {
+    background: linear-gradient(90deg, rgba(255,92,156,0.25), rgba(255,205,60,0.25), rgba(79,140,255,0.25));
+    border-color: rgba(255, 205, 60, 0.7);
+    color: var(--gold);
+  }
+
+  /* ===== Célébration YUM ===== */
+  .yum-overlay {
+    position: fixed; inset: 0; z-index: 2000;
+    display: none;
+    flex-direction: column; align-items: center; justify-content: center;
+    text-align: center; cursor: pointer;
+    background: radial-gradient(circle at center, rgba(10,10,20,0.35), rgba(10,10,20,0.78));
+  }
+  .yum-overlay.show { display: flex; animation: yumFadeIn 0.3s ease both; }
+  .yum-overlay.hide { animation: yumFadeOut 0.7s ease both; }
+  @keyframes yumFadeIn { from { opacity: 0; } to { opacity: 1; } }
+  @keyframes yumFadeOut { from { opacity: 1; } to { opacity: 0; } }
+  .yum-title {
+    font-size: clamp(4.5rem, 24vw, 14rem);
+    font-weight: 900;
+    line-height: 1;
+    background: linear-gradient(90deg, #ff5c9c, #ffcd3c, #3ecf8e, #4f8cff, #b26bff, #ff5c9c);
+    background-size: 300% 100%;
+    -webkit-background-clip: text; background-clip: text;
+    color: transparent; -webkit-text-fill-color: transparent;
+    filter: drop-shadow(0 0 28px rgba(255, 205, 60, 0.85));
+    animation: yumTitleIn 0.9s cubic-bezier(0.34, 1.56, 0.64, 1) both,
+               yumShimmer 1.4s linear infinite,
+               yumBounce 0.7s ease-in-out 0.9s infinite alternate;
+  }
+  @keyframes yumTitleIn {
+    0% { transform: scale(0) rotate(-25deg); opacity: 0; }
+    100% { transform: scale(1) rotate(0deg); opacity: 1; }
+  }
+  @keyframes yumBounce {
+    0% { transform: scale(1) rotate(-2deg); }
+    100% { transform: scale(1.12) rotate(2deg); }
+  }
+  .yum-dice { font-size: clamp(2rem, 9vw, 4.5rem); margin-bottom: 6px; animation: yumSpin 1.6s linear infinite; }
+  @keyframes yumSpin { to { transform: rotate(360deg); } }
+  .yum-sub {
+    margin-top: 10px;
+    font-size: clamp(1.3rem, 5vw, 2.6rem);
+    font-weight: 800;
+    color: #fff;
+    text-shadow: 0 0 18px rgba(255, 205, 60, 0.9), 0 3px 0 rgba(0,0,0,0.4);
+    padding: 0 16px;
+    animation: yumSubIn 0.7s 0.5s cubic-bezier(0.34, 1.56, 0.64, 1) both;
+  }
+  .yum-sub2 {
+    margin-top: 8px;
+    font-size: clamp(1rem, 3vw, 1.5rem);
+    color: var(--gold);
+    font-weight: 700;
+    animation: yumSubIn 0.7s 0.8s cubic-bezier(0.34, 1.56, 0.64, 1) both;
+  }
+  .yum-hint { margin-top: 26px; font-size: 0.78rem; color: rgba(255,255,255,0.55); }
+  @keyframes yumSubIn {
+    from { transform: translateY(40px) scale(0.6); opacity: 0; }
+    to { transform: translateY(0) scale(1); opacity: 1; }
+  }
+
+  body.yum-rainbow::before {
+    content: "";
+    position: fixed; inset: 0; z-index: 1999;
+    pointer-events: none;
+    background: conic-gradient(from 0deg at 50% 50%, #ff5c9c, #ffcd3c, #3ecf8e, #4f8cff, #b26bff, #ff5c9c);
+    mix-blend-mode: screen;
+    animation: yumRainbow 3.6s linear forwards;
+  }
+  @keyframes yumRainbow {
+    0% { opacity: 0; filter: hue-rotate(0deg); }
+    8% { opacity: 0.6; }
+    40% { opacity: 0.25; }
+    100% { opacity: 0; filter: hue-rotate(720deg); }
+  }
+  .wrap.shake { animation: yumShake 0.5s ease-in-out 4; }
+  @keyframes yumShake {
+    0%, 100% { transform: translate(0, 0) rotate(0); }
+    20% { transform: translate(-7px, 4px) rotate(-0.6deg); }
+    40% { transform: translate(6px, -5px) rotate(0.5deg); }
+    60% { transform: translate(-5px, -3px) rotate(-0.4deg); }
+    80% { transform: translate(5px, 5px) rotate(0.4deg); }
+  }
+  .team.yum-glow { animation: yumCard 0.5s ease-in-out infinite alternate; }
+  @keyframes yumCard {
+    0% { transform: scale(1); box-shadow: 0 0 0 3px #ff5c9c, 0 0 50px rgba(255,92,156,0.9); }
+    33% { box-shadow: 0 0 0 3px #ffcd3c, 0 0 50px rgba(255,205,60,0.9); }
+    66% { box-shadow: 0 0 0 3px #3ecf8e, 0 0 50px rgba(62,207,142,0.9); }
+    100% { transform: scale(1.04); box-shadow: 0 0 0 3px #4f8cff, 0 0 60px rgba(79,140,255,0.9); }
+  }
+  .fx-piece { position: fixed; pointer-events: none; z-index: 2001; will-change: transform, opacity; }
+  .emoji-piece {
+    position: fixed; top: -70px; z-index: 2001; pointer-events: none;
+    animation: emojiFall linear forwards;
+  }
+  @keyframes emojiFall {
+    0% { transform: translate(0, 0) rotate(0deg); opacity: 1; }
+    100% { transform: translate(var(--sway), 118vh) rotate(var(--rot)); opacity: 1; }
+  }
+
+  /* ===== Historique des parties ===== */
+  .games-section {
+    background: var(--panel);
+    border: 1px solid var(--border);
+    border-radius: var(--radius);
+    padding: 22px;
+    margin-top: 34px;
+  }
+  .games-head {
+    display: flex; align-items: center; justify-content: space-between;
+    gap: 10px; flex-wrap: wrap; margin-bottom: 16px;
+  }
+  .games-head .stats-title { margin: 0; }
+  .btn-clear {
+    background: transparent; border: 1px solid var(--border); color: var(--muted);
+    padding: 6px 12px; font-size: 0.78rem;
+  }
+  .btn-clear:hover { color: var(--bad); border-color: var(--bad); }
+  .btn-clear.armed { color: #fff; background: var(--bad); border-color: var(--bad); }
+  .games-list { display: grid; grid-template-columns: repeat(auto-fill, minmax(320px, 1fr)); gap: 14px; }
+  .game-card {
+    background: var(--panel-2);
+    border: 1px solid var(--border);
+    border-radius: 12px;
+    padding: 14px 16px;
+    position: relative;
+    overflow: hidden;
+  }
+  .game-card::before { content: ""; position: absolute; left: 0; top: 0; bottom: 0; width: 4px; background: var(--border); }
+  .game-card.won::before { background: var(--good); }
+  .game-card.yum::before { background: linear-gradient(180deg, #ff5c9c, #ffcd3c, #3ecf8e, #4f8cff, #b26bff); }
+  .game-card.abandoned::before { background: var(--muted); }
+  .game-card-head { display: flex; align-items: center; gap: 8px; margin-bottom: 2px; }
+  .game-title {
+    flex: 1; min-width: 0;
+    background: transparent; border: none; border-bottom: 1px dashed transparent;
+    color: var(--text); font-size: 0.98rem; font-weight: 700; padding: 3px 2px; border-radius: 0;
+  }
+  .game-title:hover, .game-title:focus { border-bottom-color: var(--border); outline: none; }
+  .game-del { background: none; border: none; color: var(--muted); cursor: pointer; opacity: 0.5; font-size: 0.95rem; padding: 2px 6px; }
+  .game-del:hover { opacity: 1; color: var(--bad); }
+  .game-meta { font-size: 0.75rem; color: var(--muted); margin-bottom: 10px; }
+  .badge { display: inline-block; font-size: 0.7rem; font-weight: 700; padding: 3px 9px; border-radius: 999px; margin-bottom: 10px; }
+  .badge.won { background: rgba(62,207,142,0.15); color: var(--good); }
+  .badge.yum { background: linear-gradient(90deg, #ff5c9c, #ffcd3c, #3ecf8e, #4f8cff); color: #1a1200; }
+  .badge.abandoned { background: rgba(154,161,172,0.15); color: var(--muted); }
+  .game-players { display: flex; flex-direction: column; gap: 4px; }
+  .game-player {
+    display: grid; grid-template-columns: 1fr auto; gap: 10px; align-items: center;
+    padding: 6px 8px; border-radius: 8px; background: var(--panel);
+    font-size: 0.86rem;
+  }
+  .game-player.winner { outline: 1px solid rgba(255,205,60,0.55); background: rgba(255,205,60,0.07); }
+  .game-player .pname { display: flex; align-items: center; gap: 8px; font-weight: 600; min-width: 0; }
+  .game-player .pname span.txt { overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+  .game-player .dot { width: 9px; height: 9px; border-radius: 50%; flex-shrink: 0; }
+  .game-player .pscore { text-align: right; font-variant-numeric: tabular-nums; font-weight: 700; }
+  .game-player .psub { display: block; font-size: 0.7rem; color: var(--muted); font-weight: 400; }
 </style>
 </head>
 <body>
@@ -548,12 +745,19 @@
   </header>
 
   <div class="settings">
+    <label class="game-name-label">Nom de la partie
+      <input type="text" id="gameName" class="game-name" placeholder="Nom de la partie" oninput="onGameNameInput(this.value)">
+    </label>
     <label>Score de départ
       <input type="number" id="startScore" value="25000" step="500" min="0">
     </label>
     <label>
       <input type="checkbox" id="exactMode" checked>
       Il faut tomber pile sur 0 (sinon le tour est refusé)
+    </label>
+    <label>
+      <input type="checkbox" id="soundOn" checked>
+      🔊 Sons (fanfare YUM)
     </label>
   </div>
 
@@ -568,10 +772,20 @@
   <div class="footer-actions">
     <button class="btn btn-reset" onclick="resetGame()">↺ Nouvelle partie</button>
   </div>
+
+  <div class="games-section" id="gamesSection"></div>
 </div>
 
 <div class="milestone-toast" id="milestoneToast"></div>
 <div class="victory-banner" id="victoryBanner"></div>
+
+<div class="yum-overlay" id="yumOverlay" onclick="hideYum()">
+  <div class="yum-dice">🎲🎲🎲🎲🎲</div>
+  <div class="yum-title">YUM !</div>
+  <div class="yum-sub" id="yumTeam"></div>
+  <div class="yum-sub2">🏆 La partie est gagnée ! 🏆</div>
+  <div class="yum-hint">(cliquer pour fermer)</div>
+</div>
 
 <script>
   const PALETTE = ['#4f8cff', '#ff7a59', '#ffcd3c', '#b26bff', '#3ecf8e', '#ff5c9c'];
@@ -595,6 +809,42 @@
     const lightness = 8 + t * 12; // 8% -> 20%
     return `hsl(2, 65%, ${lightness}%)`;
   }
+
+  const GAMES_KEY = 'de25000.games';
+
+  function loadGames() {
+    try {
+      const raw = localStorage.getItem(GAMES_KEY);
+      const arr = raw ? JSON.parse(raw) : [];
+      return Array.isArray(arr) ? arr : [];
+    } catch (e) { return []; }
+  }
+  function saveGames() {
+    try { localStorage.setItem(GAMES_KEY, JSON.stringify(games)); } catch (e) { /* stockage indisponible : on reste en mémoire */ }
+  }
+
+  // Nom par défaut : jour, date, année et heure du moment
+  function defaultGameName(d) {
+    d = d || new Date();
+    const s = d.toLocaleString('fr-CA', {
+      weekday: 'long', day: 'numeric', month: 'long', year: 'numeric',
+      hour: '2-digit', minute: '2-digit', hour12: false
+    });
+    return s.charAt(0).toUpperCase() + s.slice(1);
+  }
+  function fmtDate(ts) {
+    return new Date(ts).toLocaleString('fr-CA', {
+      day: 'numeric', month: 'long', year: 'numeric', hour: '2-digit', minute: '2-digit', hour12: false
+    });
+  }
+
+  function newGameState() {
+    return { finished: false, winnerId: null, viaYum: false, archivedId: null, startedAt: Date.now() };
+  }
+
+  let games = loadGames();
+  let game = newGameState();
+  let clearArmed = false;
 
   let nextId = 3;
   let state = {
@@ -659,6 +909,12 @@
     const t = findTeam(id);
     if (!t) return;
 
+    if (game.finished) {
+      statusEl.textContent = "La partie est terminée — lancez une nouvelle partie.";
+      statusEl.className = 'status bust';
+      return;
+    }
+
     if (isNaN(pts) || pts <= 0) {
       statusEl.textContent = "Entrez un nombre de points valide.";
       statusEl.className = 'status bust';
@@ -688,6 +944,7 @@
     statusEl.textContent = '';
     statusEl.className = 'status';
 
+    if (reachedZero) finishGame(t, false);
     render();
 
     if (reachedZero) {
@@ -702,9 +959,91 @@
   function undoLast(id) {
     const t = findTeam(id);
     if (!t || t.history.length === 0) return;
-    t.score += t.history.pop().pts;
+    if (game.finished && game.winnerId !== t.id) return;
+    const entry = t.history.pop();
+    t.score = entry.yum ? entry.before : t.score + entry.pts;
     if (t.score > MILESTONE) t.hitMilestone = false;
+    if (game.finished && game.winnerId === t.id && t.score !== 0) {
+      reopenGame();
+      hideYum();
+    }
     render();
+  }
+
+  // ---------- Fin de partie, archivage, YUM ----------
+  function realHistory(t) { return t.history.filter(h => !h.yum); }
+
+  function snapshotTeams() {
+    return state.teams.map((t, i) => {
+      const rh = realHistory(t);
+      return {
+        name: (t.name || '').trim() || ('Équipe ' + (i + 1)),
+        color: colorFor(i),
+        score: t.score,
+        rounds: rh.length,
+        total: rh.reduce((s, h) => s + h.pts, 0)
+      };
+    });
+  }
+
+  function archiveGame(status, winnerTeam) {
+    const nameInput = document.getElementById('gameName');
+    const idx = winnerTeam ? state.teams.indexOf(winnerTeam) : -1;
+    const entry = {
+      id: 'g' + Date.now() + Math.floor(Math.random() * 1000),
+      name: nameInput.value.trim() || defaultGameName(),
+      startedAt: game.startedAt,
+      endedAt: Date.now(),
+      startScore: getStart(),
+      status: status,                       // 'won' | 'yum' | 'abandoned'
+      winnerIndex: idx,
+      teams: snapshotTeams()
+    };
+    games.unshift(entry);
+    saveGames();
+    renderGames();
+    return entry.id;
+  }
+
+  function finishGame(team, viaYum) {
+    game.finished = true;
+    game.winnerId = team.id;
+    game.viaYum = viaYum;
+    game.archivedId = archiveGame(viaYum ? 'yum' : 'won', team);
+  }
+
+  function reopenGame() {
+    if (game.archivedId) {
+      games = games.filter(g => g.id !== game.archivedId);
+      saveGames();
+      renderGames();
+    }
+    game.finished = false;
+    game.winnerId = null;
+    game.viaYum = false;
+    game.archivedId = null;
+  }
+
+  function declareYum(id) {
+    if (game.finished) return;
+    const t = findTeam(id);
+    if (!t) return;
+    t.history.push({ pts: 0, resultingScore: 0, yum: true, before: t.score });
+    t.score = 0;
+    t.hitMilestone = true;
+    finishGame(t, true);
+    render();
+    celebrateYum(t);
+  }
+
+  function onGameNameInput(value) {
+    if (!game.archivedId) return;
+    const g = games.find(x => x.id === game.archivedId);
+    if (g) {
+      g.name = value.trim() || defaultGameName();
+      saveGames();
+      renderGames();
+    }
   }
 
   function celebrateMilestone(team) {
@@ -791,7 +1130,7 @@
 
     // Stats par équipe
     const teamStats = state.teams.map((t, index) => {
-      const pts = t.history.map(h => h.pts);
+      const pts = realHistory(t).map(h => h.pts);
       const rounds = pts.length;
       const total = pts.reduce((s, p) => s + p, 0);
       const average = rounds > 0 ? total / rounds : 0;
@@ -808,7 +1147,7 @@
 
     let bestRoundOverall = null;
     teamStats.forEach(x => {
-      x.team.history.forEach(h => {
+      realHistory(x.team).forEach(h => {
         if (!bestRoundOverall || h.pts > bestRoundOverall.pts) {
           bestRoundOverall = { pts: h.pts, teamName: x.team.name, color: x.color };
         }
@@ -914,7 +1253,9 @@
         ? `<button class="remove-team" title="Retirer cette équipe" onclick="removeTeam(${t.id})">✕</button>`
         : '';
 
-      const roundsPlayed = t.history.length;
+      const locked = game.finished;
+      const dis = locked ? 'disabled' : '';
+      const roundsPlayed = realHistory(t).length;
       const totalPlayed = t.history.reduce((sum, h) => sum + h.pts, 0);
 
       let historyHtml;
@@ -924,7 +1265,11 @@
         const items = t.history.slice().reverse().map((h, idxRev) => {
           const idx = t.history.length - 1 - idxRev;
           const isLast = idx === t.history.length - 1;
-          const undoHtml = isLast ? `<button onclick="undoLast(${t.id})">↺ annuler</button>` : '';
+          const canUndo = isLast && (!locked || game.winnerId === t.id);
+          const undoHtml = canUndo ? `<button onclick="undoLast(${t.id})">↺ annuler</button>` : '';
+          if (h.yum) {
+            return `<li><span>🎉 <b>YUM !</b> → 0</span>${undoHtml}</li>`;
+          }
           return `<li><span>Tour ${idx + 1} : <span class="neg">-${h.pts.toLocaleString('fr-CA')}</span> → ${h.resultingScore.toLocaleString('fr-CA')}</span>${undoHtml}</li>`;
         }).join('');
         historyHtml = `<ul>${items}</ul>`;
@@ -942,16 +1287,17 @@
           <span>Total joué : <b>${totalPlayed.toLocaleString('fr-CA')}</b></span>
         </div>
         <div class="input-row">
-          <input type="number" id="input-${t.id}" placeholder="Points du tour" inputmode="numeric">
-          <button class="btn btn-sub" onclick="subtractScore(${t.id})">Soustraire</button>
+          <input type="number" id="input-${t.id}" placeholder="Points du tour" inputmode="numeric" ${dis}>
+          <button class="btn btn-sub" onclick="subtractScore(${t.id})" ${dis}>Soustraire</button>
         </div>
+        <button class="btn btn-yum" onclick="declareYum(${t.id})" ${dis} title="Cette équipe a fait un YUM : elle gagne la partie !">🎲 YUM !</button>
         <div class="quick-row">
-          <button onclick="quickAdd(${t.id},50)">+50</button>
-          <button onclick="quickAdd(${t.id},100)">+100</button>
-          <button onclick="quickAdd(${t.id},250)">+250</button>
-          <button onclick="quickAdd(${t.id},500)">+500</button>
-          <button onclick="quickAdd(${t.id},1000)">+1000</button>
-          <button onclick="clearInput(${t.id})" style="margin-left:auto;">effacer</button>
+          <button onclick="quickAdd(${t.id},50)" ${dis}>+50</button>
+          <button onclick="quickAdd(${t.id},100)" ${dis}>+100</button>
+          <button onclick="quickAdd(${t.id},250)" ${dis}>+250</button>
+          <button onclick="quickAdd(${t.id},500)" ${dis}>+500</button>
+          <button onclick="quickAdd(${t.id},1000)" ${dis}>+1000</button>
+          <button onclick="clearInput(${t.id})" style="margin-left:auto;" ${dis}>effacer</button>
         </div>
         <div class="history">
           <h4>Historique</h4>
@@ -962,7 +1308,7 @@
       if (t.score === 0) {
         const scoreEl = card.querySelector('.score');
         scoreEl.classList.add('won');
-        card.querySelector('.status').textContent = '🏆 Score atteint !';
+        card.querySelector('.status').textContent = (game.viaYum && game.winnerId === t.id) ? '🎉 YUM ! Partie gagnée !' : '🏆 Score atteint !';
         card.querySelector('.status').className = 'status won';
       }
 
@@ -1008,16 +1354,19 @@
 
   function checkWinner() {
     const banner = document.getElementById('winnerBanner');
-    const winners = state.teams.filter(t => t.score === 0);
-
-    if (winners.length === 0) {
-      banner.classList.remove('show');
+    const w = game.finished ? findTeam(game.winnerId) : null;
+    if (!w) {
+      banner.classList.remove('show', 'yum');
+      banner.innerHTML = '';
       return;
     }
-    if (winners.length === 1) {
-      banner.textContent = `🎉 ${winners[0].name} gagne la partie !`;
+    const next = '<button class="btn btn-next" onclick="resetGame()">▶ Nouvelle partie</button>';
+    if (game.viaYum) {
+      banner.innerHTML = `🎉🎲 ${escapeAttr(w.name)} gagne la partie avec un YUM ! 🎲🎉 ${next}`;
+      banner.classList.add('yum');
     } else {
-      banner.textContent = `🎉 Égalité entre ${winners.map(w => w.name).join(', ')} !`;
+      banner.innerHTML = `🎉 ${escapeAttr(w.name)} gagne la partie ! ${next}`;
+      banner.classList.remove('yum');
     }
     banner.classList.add('show');
   }
@@ -1027,6 +1376,13 @@
   }
 
   function resetGame() {
+    // Une partie commencée mais non terminée est quand même conservée dans l'historique
+    if (!game.finished && state.teams.some(t => t.history.length > 0)) {
+      archiveGame('abandoned', null);
+    }
+    game = newGameState();
+    hideYum(true);
+    document.getElementById('gameName').value = defaultGameName();
     const start = getStart();
     state.teams.forEach(t => {
       t.score = start;
@@ -1036,9 +1392,281 @@
     render();
   }
 
+
+  // ================= Historique des parties =================
+  function renderGames() {
+    const sec = document.getElementById('gamesSection');
+    const clearBtn = games.length
+      ? `<button class="btn btn-clear ${clearArmed ? 'armed' : ''}" onclick="clearGames()">${clearArmed ? 'Cliquer pour confirmer' : '🗑 Vider l’historique'}</button>`
+      : '';
+
+    let body;
+    if (games.length === 0) {
+      body = '<div class="stats-empty">Aucune partie enregistrée pour l’instant — elle apparaîtra ici dès qu’une équipe termine sa partie (ou fait un YUM !).</div>';
+    } else {
+      body = '<div class="games-list">' + games.map((g, i) => {
+        const num = games.length - i;
+        const badge = g.status === 'yum'
+          ? '<span class="badge yum">🎉 Victoire par YUM</span>'
+          : g.status === 'won'
+            ? '<span class="badge won">🏆 Victoire</span>'
+            : '<span class="badge abandoned">⏸ Partie interrompue</span>';
+        const order = g.teams.map((t, idx) => ({ t, idx })).sort((a, b) => {
+          if (a.idx === g.winnerIndex) return -1;
+          if (b.idx === g.winnerIndex) return 1;
+          return a.t.score - b.t.score;
+        });
+        const players = order.map(({ t, idx }) => {
+          const isW = idx === g.winnerIndex;
+          const sub = t.rounds > 0
+            ? `${t.rounds} tour${t.rounds > 1 ? 's' : ''} · ${t.total.toLocaleString('fr-CA')} pts joués`
+            : (isW && g.status === 'yum' ? 'YUM direct !' : 'aucun tour');
+          return `
+            <div class="game-player ${isW ? 'winner' : ''}">
+              <div class="pname"><span class="dot" style="background:${t.color};"></span><span class="txt">${isW ? '👑 ' : ''}${escapeAttr(t.name)}</span></div>
+              <div class="pscore">${t.score.toLocaleString('fr-CA')}<span class="psub">${sub}</span></div>
+            </div>`;
+        }).join('');
+        return `
+          <div class="game-card ${g.status}">
+            <div class="game-card-head">
+              <input class="game-title" type="text" value="${escapeAttr(g.name)}" oninput="renameGame('${g.id}', this.value)" aria-label="Nom de la partie">
+              <button class="game-del" title="Supprimer cette partie" onclick="deleteGame('${g.id}')">✕</button>
+            </div>
+            <div class="game-meta">Partie n° ${num} · ${fmtDate(g.endedAt)} · départ ${g.startScore.toLocaleString('fr-CA')}</div>
+            ${badge}
+            <div class="game-players">${players}</div>
+          </div>`;
+      }).join('') + '</div>';
+    }
+
+    sec.innerHTML = `
+      <div class="games-head">
+        <h3 class="stats-title">📚 Historique des parties${games.length ? ' (' + games.length + ')' : ''}</h3>
+        ${clearBtn}
+      </div>
+      ${body}
+    `;
+  }
+
+  function renameGame(id, value) {
+    const g = games.find(x => x.id === id);
+    if (!g) return;
+    g.name = value;
+    if (game.archivedId === id) document.getElementById('gameName').value = value;
+    saveGames();
+  }
+
+  function deleteGame(id) {
+    if (game.archivedId === id) game.archivedId = null;
+    games = games.filter(g => g.id !== id);
+    saveGames();
+    renderGames();
+  }
+
+  function clearGames() {
+    if (!clearArmed) {
+      clearArmed = true;
+      renderGames();
+      setTimeout(() => { if (clearArmed) { clearArmed = false; renderGames(); } }, 4000);
+      return;
+    }
+    clearArmed = false;
+    games = [];
+    game.archivedId = null;
+    saveGames();
+    renderGames();
+  }
+
+  // ================= Célébration YUM (effet maximal) =================
+  let yumTimers = [];
+  let audioCtx = null;
+  const FX_COLORS = ['#ff5c9c', '#ffcd3c', '#3ecf8e', '#4f8cff', '#b26bff', '#ff7a59', '#ffffff'];
+  const FX_EMOJIS = ['🎲', '🎉', '🥳', '🎊', '✨', '🏆', '💥', '🔥', '🌟', '🤩', '🍾', '👏'];
+  function rand(a, b) { return a + Math.random() * (b - a); }
+  function pick(arr) { return arr[Math.floor(Math.random() * arr.length)]; }
+  function later(fn, ms) { yumTimers.push(setTimeout(fn, ms)); }
+
+  function newFx() {
+    const el = document.createElement('div');
+    el.className = 'fx-piece';
+    document.body.appendChild(el);
+    return el;
+  }
+
+  // Canon à confettis dans un coin du bas, trajectoire balistique
+  function launchCannon(side, count) {
+    const W = window.innerWidth, H = window.innerHeight;
+    const dirX = side === 'left' ? 1 : -1;
+    for (let i = 0; i < count; i++) {
+      const el = newFx();
+      const w = rand(6, 13);
+      el.style.width = w + 'px';
+      el.style.height = (w * rand(0.8, 1.8)) + 'px';
+      el.style.background = pick(FX_COLORS);
+      if (Math.random() > 0.55) el.style.borderRadius = '50%';
+      el.style.left = (side === 'left' ? 0 : W) + 'px';
+      el.style.top = H + 'px';
+      const angle = rand(38, 82) * Math.PI / 180;
+      const speed = rand(650, 1500) * Math.max(0.6, Math.min(1.3, H / 800));
+      const vx = Math.cos(angle) * speed * dirX;
+      const vy = -Math.sin(angle) * speed;
+      const g = 1500, T = rand(2.0, 3.2), rot = rand(-900, 900);
+      const frames = [];
+      const N = 10;
+      for (let k = 0; k <= N; k++) {
+        const t = (k / N) * T;
+        frames.push({
+          transform: `translate(${vx * t}px, ${vy * t + 0.5 * g * t * t}px) rotate(${rot * k / N}deg)`,
+          opacity: k > N - 3 ? 1 - (k - (N - 3)) / 3 : 1
+        });
+      }
+      const anim = el.animate(frames, { duration: T * 1000, easing: 'linear', fill: 'forwards', delay: rand(0, 250) });
+      anim.onfinish = () => el.remove();
+    }
+  }
+
+  // Feu d'artifice : gerbe radiale de particules lumineuses
+  function fireworkBurst(x, y) {
+    const color = pick(FX_COLORS);
+    const color2 = pick(FX_COLORS);
+    const n = 38;
+    for (let i = 0; i < n; i++) {
+      const el = newFx();
+      const c = i % 3 === 0 ? color2 : color;
+      const size = rand(4, 8);
+      el.style.width = size + 'px';
+      el.style.height = size + 'px';
+      el.style.borderRadius = '50%';
+      el.style.background = c;
+      el.style.boxShadow = `0 0 10px 2px ${c}`;
+      el.style.left = x + 'px';
+      el.style.top = y + 'px';
+      const a = (i / n) * Math.PI * 2 + rand(-0.08, 0.08);
+      const d = rand(90, 230);
+      const dx = Math.cos(a) * d, dy = Math.sin(a) * d;
+      const anim = el.animate([
+        { transform: 'translate(0,0) scale(1)', opacity: 1 },
+        { transform: `translate(${dx}px, ${dy}px) scale(1)`, opacity: 1, offset: 0.6 },
+        { transform: `translate(${dx * 1.08}px, ${dy * 1.08 + 60}px) scale(0.2)`, opacity: 0 }
+      ], { duration: rand(1100, 1700), easing: 'cubic-bezier(0.1, 0.7, 0.3, 1)', fill: 'forwards' });
+      anim.onfinish = () => el.remove();
+    }
+  }
+
+  function randomBurst() {
+    fireworkBurst(rand(0.08, 0.92) * window.innerWidth, rand(0.12, 0.6) * window.innerHeight);
+  }
+
+  // Pluie d'émojis festifs
+  function emojiRain(count) {
+    for (let i = 0; i < count; i++) {
+      const el = document.createElement('div');
+      el.className = 'emoji-piece';
+      el.textContent = pick(FX_EMOJIS);
+      el.style.left = rand(0, 98) + 'vw';
+      el.style.fontSize = rand(1.4, 3.4) + 'rem';
+      const dur = rand(2.4, 4.6), delay = rand(0, 0.8);
+      el.style.animationDuration = dur + 's';
+      el.style.animationDelay = delay + 's';
+      el.style.setProperty('--sway', rand(-120, 120) + 'px');
+      el.style.setProperty('--rot', rand(-540, 540) + 'deg');
+      document.body.appendChild(el);
+      setTimeout(() => el.remove(), (dur + delay) * 1000 + 300);
+    }
+  }
+
+  // Petite fanfare synthétisée (Web Audio) — jouée seulement si "Sons" est coché
+  function playFanfare() {
+    try {
+      if (!document.getElementById('soundOn').checked) return;
+      const AC = window.AudioContext || window.webkitAudioContext;
+      if (!AC) return;
+      audioCtx = audioCtx || new AC();
+      if (audioCtx.state === 'suspended') audioCtx.resume();
+      const now = audioCtx.currentTime + 0.02;
+      const tone = (freq, start, dur, type, vol) => {
+        const o = audioCtx.createOscillator();
+        const g = audioCtx.createGain();
+        o.type = type; o.frequency.value = freq;
+        g.gain.setValueAtTime(0.0001, now + start);
+        g.gain.exponentialRampToValueAtTime(vol, now + start + 0.02);
+        g.gain.exponentialRampToValueAtTime(0.0001, now + start + dur);
+        o.connect(g); g.connect(audioCtx.destination);
+        o.start(now + start); o.stop(now + start + dur + 0.05);
+      };
+      // Arpège montant C5 E5 G5 C6 puis accord final tenu
+      [523.25, 659.25, 783.99, 1046.5].forEach((f, i) => tone(f, i * 0.11, 0.22, 'square', 0.12));
+      [1046.5, 1318.5, 1568.0, 2093.0].forEach(f => tone(f, 0.5, 1.4, 'triangle', 0.16));
+      [523.25, 659.25, 783.99].forEach(f => tone(f, 0.5, 1.4, 'sawtooth', 0.05));
+      // Petits "pop" de feux d'artifice
+      [0.9, 1.25, 1.55, 1.9, 2.2].forEach((t, i) => tone(1800 + i * 260, t, 0.12, 'sine', 0.1));
+    } catch (e) { /* audio indisponible : sans conséquence */ }
+  }
+
+  function hideYum(immediate) {
+    yumTimers.forEach(clearTimeout);
+    yumTimers = [];
+    const o = document.getElementById('yumOverlay');
+    document.querySelectorAll('.team.yum-glow').forEach(c => c.classList.remove('yum-glow'));
+    if (immediate || !o.classList.contains('show')) {
+      o.classList.remove('show', 'hide');
+      return;
+    }
+    o.classList.add('hide');
+    setTimeout(() => o.classList.remove('show', 'hide'), 700);
+  }
+
+  function celebrateYum(team) {
+    hideYum(true);
+    const o = document.getElementById('yumOverlay');
+    document.getElementById('yumTeam').textContent = `${team.name} a fait un YUM !`;
+    void o.offsetWidth;
+    o.classList.add('show');
+
+    // Carte de l'équipe qui s'illumine en arc-en-ciel
+    const card = document.getElementById('team-' + team.id);
+    if (card) card.classList.add('yum-glow');
+
+    // Flash arc-en-ciel + tremblement de l'écran
+    document.body.classList.remove('yum-rainbow');
+    void document.body.offsetWidth;
+    document.body.classList.add('yum-rainbow');
+    const wrap = document.getElementById('wrap');
+    wrap.classList.remove('shake');
+    void wrap.offsetWidth;
+    wrap.classList.add('shake');
+    later(() => { document.body.classList.remove('yum-rainbow'); wrap.classList.remove('shake'); }, 3700);
+
+    try { if (navigator.vibrate) navigator.vibrate([120, 60, 120, 60, 300]); } catch (e) {}
+    playFanfare();
+
+    // Explosion initiale
+    launchCannon('left', 110);
+    launchCannon('right', 110);
+    launchConfetti(180);
+    emojiRain(45);
+    for (let i = 0; i < 4; i++) later(randomBurst, i * 180);
+
+    // Vagues successives pendant ~6 secondes
+    for (let i = 1; i <= 12; i++) {
+      later(() => {
+        launchCannon(i % 2 ? 'left' : 'right', 55);
+        randomBurst();
+        if (i % 2 === 0) { randomBurst(); launchConfetti(70); }
+        if (i % 3 === 0) emojiRain(18);
+      }, 450 * i);
+    }
+
+    // Retrait automatique de l'écran géant
+    later(() => hideYum(), 7200);
+  }
+
   document.getElementById('startScore').addEventListener('change', resetGame);
 
+  document.getElementById('gameName').value = defaultGameName();
   render();
+  renderGames();
 </script>
 </body>
 </html>
